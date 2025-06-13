@@ -26,4 +26,10 @@ public class DemoController {
         demoService.registerBroker(dto);
         return "OK";
     }
+
+    @PostMapping("/topic")
+    public String registerTopic(@RequestBody PersonRegisterRequestDto dto){
+        demoService.registerBroker(dto);
+        return "OK";
+    }
 }

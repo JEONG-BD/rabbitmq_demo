@@ -16,8 +16,14 @@ public class DemoConsumer {
     private final RabbitTemplate rabbitTemplate;
     private final DemoMessageService messageService;
 
-    @RabbitListener(queues = RabbitConfig.REGISTER_QUEUE_NAME)
-    public void receiveRegister(PersonRegisterRequestDto message) {
+    @RabbitListener(queues = RabbitConfig.REGISTER_QUEUE_NAME_A)
+    public void receiveRegisterA(PersonRegisterRequestDto message) {
+        log.info(String.format("Received message -> %s", message));
+        messageService.processRegister(message);
+    }
+
+    @RabbitListener(queues = RabbitConfig.REGISTER_QUEUE_NAME_B)
+    public void receiveRegisterB(PersonRegisterRequestDto message) {
         log.info(String.format("Received message -> %s", message));
         messageService.processRegister(message);
     }

@@ -1,9 +1,6 @@
 package me.example.demo.config;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -18,8 +15,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitConfig {
 
-    public static final String REGISTER_EXCHANGE_NAME = "demo_register_exchange";
-    public static final String REGISTER_QUEUE_NAME = "demo_register_queue";
+    public static final String TOPIC_EXCHANGE_NAME = "demo";
+    public static final String REGISTER_EXCHANGE_NAME_A = "demo_register_exchange_a";
+    public static final String REGISTER_EXCHANGE_NAME_B = "demo_register_exchange_b";
+    public static final String REGISTER_QUEUE_NAME_A = "demo_register_queue_a";
+    public static final String REGISTER_QUEUE_NAME_B = "demo_register_queue_b";
     public static final String REGISTER_ROUTING_KEY = "demo_register_key";
 
     //@Value("${rabbitmq.exchange.name}")
@@ -48,19 +48,41 @@ public class RabbitConfig {
     //}
 
 
-    @Bean(name = "registerExchange")
-    public DirectExchange declareExchange() {
-        return new DirectExchange(REGISTER_EXCHANGE_NAME);
+    @Bean(name = "registerExchangeA")
+    public DirectExchange declareDirectExchangeA() {
+        return new DirectExchange(REGISTER_EXCHANGE_NAME_A);
     }
 
-    @Bean(name = "registerQueue")
-    public Queue declareQueue() {
-        return new Queue(REGISTER_QUEUE_NAME, true);
+    @Bean(name = "registerExchangeB")
+    public DirectExchange declareDirectExchangeB() {
+        return new DirectExchange(REGISTER_EXCHANGE_NAME_B);
+    }
+
+    @Bean(name = "topicExchange")
+    public TopicExchange declareTopicExchange_A() {
+        return new TopicExchange(TOPIC_EXCHANGE_NAME);
+    }
+
+    @Bean(name = "registerQueueA")
+    public Queue declareQueueA() {
+        return new Queue(REGISTER_QUEUE_NAME_A, true);
+    }
+
+    @Bean(name = "registerQueueB")
+    public Queue declareQueueB() {
+        return new Queue(REGISTER_QUEUE_NAME_B, true);
     }
 
     @Bean
-    public Binding exchangeBindingQueue(@Qualifier("registerQueue") Queue queue,
-                                        @Qualifier("registerExchange") DirectExchange exchange) {
+    public Binding exchangeBindingQueueA(@Qualifier("registerQueueA") Queue queue,
+                                        @Qualifier("topicExchange") TopicExchange exchange) {
+        return BindingBuilder.bind(queue)
+                .to(exchange)
+                .with(REGISTER_ROUTING_KEY);
+    }    @Bean
+
+    public Binding exchangeBindingQueueB(@Qualifier("registerQueueB") Queue queue,
+                                        @Qualifier("topicExchange") TopicExchange exchange) {
         return BindingBuilder.bind(queue)
                 .to(exchange)
                 .with(REGISTER_ROUTING_KEY);

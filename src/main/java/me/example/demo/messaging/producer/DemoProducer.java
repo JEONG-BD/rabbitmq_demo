@@ -14,13 +14,33 @@ import org.springframework.stereotype.Component;
 public class DemoProducer {
     private final RabbitTemplate rabbitTemplate;
 
-    public void sendRegister(PersonRegisterRequestDto dto) {
+    public void sendRegisterA(PersonRegisterRequestDto dto) {
         log.info(String.format("Send message -> %s", dto));
         rabbitTemplate.convertAndSend(
-                RabbitConfig.REGISTER_EXCHANGE_NAME,
+                RabbitConfig.REGISTER_EXCHANGE_NAME_A,
                 RabbitConfig.REGISTER_ROUTING_KEY,
                 dto
         );
     }
+
+    public void sendRegisterB(PersonRegisterRequestDto dto) {
+        log.info(String.format("Send message -> %s", dto));
+        rabbitTemplate.convertAndSend(
+                RabbitConfig.REGISTER_EXCHANGE_NAME_A,
+                RabbitConfig.REGISTER_ROUTING_KEY,
+                dto
+        );
+    }
+
+    public void sendTopic(PersonRegisterRequestDto dto) {
+        log.info(String.format("Send message -> %s", dto));
+        rabbitTemplate.convertAndSend(
+                RabbitConfig.REGISTER_EXCHANGE_NAME_A,
+                RabbitConfig.REGISTER_ROUTING_KEY,
+                dto
+        );
+    }
+
+
 
 }

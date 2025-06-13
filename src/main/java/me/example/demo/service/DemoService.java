@@ -24,6 +24,10 @@ public class DemoService {
     }
 
     public void registerBroker(PersonRegisterRequestDto dto) {
-        demoProducer.sendRegister(dto);
+        demoProducer.sendRegisterA(dto);
+    }
+
+    public void registerTopic(PersonRegisterRequestDto dto) {
+        demoProducer.sendTopic(dto);
     }
 }
