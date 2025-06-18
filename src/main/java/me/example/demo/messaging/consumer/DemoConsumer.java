@@ -6,10 +6,13 @@ import me.example.demo.config.RabbitConfig;
 import me.example.demo.dto.request.PersonRegisterRequestDto;
 import me.example.demo.messaging.service.DemoMessageService;
 import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageDeliveryMode;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -22,15 +25,14 @@ public class DemoConsumer {
     public void receiveRegisterA(PersonRegisterRequestDto message, Message properties) {
 
         MessageProperties messageProperties = properties.getMessageProperties();
+        String contentEncoding = messageProperties.getContentEncoding();
+        MessageDeliveryMode deliveryMode = messageProperties.getDeliveryMode();
+        String expiration = messageProperties.getExpiration();
+        String correlationId = messageProperties.getCorrelationId();
+        String messageId = messageProperties.getMessageId();
+        String appId = messageProperties.getAppId();
+        Map<String, Object> headers = messageProperties.getHeaders();
 
-        System.out.println("messageProperties.getContentEncoding() = " + messageProperties.getContentEncoding());
-        System.out.println("messageProperties.getDeliveryMode() = " + messageProperties.getDeliveryMode());
-        System.out.println("messageProperties.getExpiration() = " + messageProperties.getExpiration());
-        System.out.println("messageProperties.getDeliveryMode() = " + messageProperties.getDeliveryMode());
-        System.out.println("messageProperties.getCorrelationId() = " + messageProperties.getCorrelationId());
-        System.out.println("messageProperties.getMessageId() = " + messageProperties.getMessageId());
-        System.out.println("messageProperties.getAppId() = " + messageProperties.getAppId());
-        System.out.println("messageProperties.getHeaders() = " + messageProperties.getHeaders());
 
         log.info(String.format("Received message -> %s", message));
         messageService.processRegister(message);
