@@ -79,7 +79,8 @@ public class RabbitConfig {
         return BindingBuilder.bind(queue)
                 .to(exchange)
                 .with(REGISTER_ROUTING_KEY);
-    }    @Bean
+    }
+    @Bean
 
     public Binding exchangeBindingQueueB(@Qualifier("registerQueueB") Queue queue,
                                         @Qualifier("topicExchange") TopicExchange exchange) {
@@ -87,10 +88,4 @@ public class RabbitConfig {
                 .to(exchange)
                 .with(REGISTER_ROUTING_KEY);
     }
-
-
-
-
-
-
 }

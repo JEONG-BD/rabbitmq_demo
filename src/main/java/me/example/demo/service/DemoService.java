@@ -23,8 +23,12 @@ public class DemoService {
         demoRepository.save(person);
     }
 
-    public void registerBroker(PersonRegisterRequestDto dto) {
+    public void registerBrokerA(PersonRegisterRequestDto dto) {
         demoProducer.sendRegisterA(dto);
+    }
+
+    public void registerBrokerB(PersonRegisterRequestDto dto) {
+        demoProducer.sendRegisterB(dto);
     }
 
     public void registerTopic(PersonRegisterRequestDto dto) {
