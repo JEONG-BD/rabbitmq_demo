@@ -21,9 +21,7 @@ public class RabbitConfig {
     public static final String REGISTER_QUEUE_NAME_A = "demo_register_queue_a";
     public static final String REGISTER_QUEUE_NAME_B = "demo_register_queue_b";
     public static final String REGISTER_ROUTING_KEY = "demo_register_key";
-    public static final String REGISTER_ROUTING_KEY_2 = "demo_error_key";
-
-    //@Value("${rabbitmq.exchange.name}")
+       //@Value("${rabbitmq.exchange.name}")
     //private String exchange;
     //
     //@Value("${rabbitmq.queue.name}")

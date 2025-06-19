@@ -39,16 +39,30 @@ public class DemoIntegrationTest {
     private DemoRepository personRepository;
 
     @Test
-    @DisplayName("메시리 라우팅에 실패한다")
+    @DisplayName("메시지 라우팅에 실패한다")
     void testMessagePublishingAndConsuming() throws InterruptedException {
         // Given
         PersonRegisterRequestDto dto = new PersonRegisterRequestDto("홍길동", "서울", "hong@test.com");
 
         // When
-        demoService.registerBrokerA(dto); // 메시지 발행
+        demoService.registerBrokerA(dto, "invalid-routing-key");
 
         // Then
         Optional<Person> result = personRepository.findByEmail("hong@test.com");
         Assertions.assertFalse(result.isPresent());
+    }
+
+    @Test
+    @DisplayName("메시지 라우팅에 성공한다")
+    void testMessagePublishingAndConsumingSuccess() throws InterruptedException {
+        // Given
+        PersonRegisterRequestDto dto = new PersonRegisterRequestDto("홍길동", "서울", "hong@test.com");
+
+        // When
+        demoService.registerBrokerA(dto, "demo_register_key");
+
+        // Then
+        Optional<Person> result = personRepository.findByEmail("hong@test.com");
+        Assertions.assertTrue(result.isPresent());
     }
 }

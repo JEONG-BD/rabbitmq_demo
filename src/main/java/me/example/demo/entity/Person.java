@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Builder()
+@NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Person {
 

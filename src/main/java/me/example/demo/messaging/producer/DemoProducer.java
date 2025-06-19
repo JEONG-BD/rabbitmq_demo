@@ -21,30 +21,36 @@ public class DemoProducer {
     public void sendRegisterA(PersonRegisterRequestDto dto) {
         log.info(String.format("Send message -> %s", dto));
 
-        rabbitTemplate.convertAndSend(RabbitConfig.REGISTER_EXCHANGE_NAME_A, "wrong.key", "Hello", message -> {
+        rabbitTemplate.convertAndSend(RabbitConfig.REGISTER_EXCHANGE_NAME_A,
+                RabbitConfig.REGISTER_ROUTING_KEY,
+                dto,
+                message -> {
+            MessageProperties props = message.getMessageProperties();
+            props.setMessageId(UUID.randomUUID().toString());
+            props.setCorrelationId("my-correlation-id");
+            props.setAppId("my-app-id");
+            props.setContentEncoding("UTF-8");
+            props.setExpiration("60000");
+            props.setDeliveryMode(MessageDeliveryMode.PERSISTENT);
+            props.setHeader("custom-key", "custom-value");
             return message;
         });
-        //rabbitTemplate.convertAndSend(RabbitConfig.REGISTER_EXCHANGE_NAME_A,
-        //        RabbitConfig.REGISTER_ROUTING_KEY_2,
-        //        dto,
-        //        message -> {
-        //    MessageProperties props = message.getMessageProperties();
-        //    props.setMessageId(UUID.randomUUID().toString());
-        //    props.setCorrelationId("my-correlation-id");
-        //    props.setAppId("my-app-id");
-        //    props.setContentEncoding("UTF-8");
-        //    props.setExpiration("60000");
-        //    props.setDeliveryMode(MessageDeliveryMode.PERSISTENT);
-        //    props.setHeader("custom-key", "custom-value");
-        //    return message;
-        //});
-        //
-        //rabbitTemplate.convertAndSend(
-        //        RabbitConfig.REGISTER_EXCHANGE_NAME_A,
-        //        RabbitConfig.REGISTER_ROUTING_KEY,
-        //        dto
-        //);
 
+        rabbitTemplate.convertAndSend(
+                RabbitConfig.REGISTER_EXCHANGE_NAME_A,
+                RabbitConfig.REGISTER_ROUTING_KEY,
+                dto
+        );
+
+    }
+
+    public void sendRegisterAForTest(PersonRegisterRequestDto dto, String testRoutingKey) {
+
+        rabbitTemplate.convertAndSend(
+                RabbitConfig.REGISTER_EXCHANGE_NAME_A,
+                testRoutingKey,
+                dto
+        );
     }
 
     public void sendRegisterB(PersonRegisterRequestDto dto) {

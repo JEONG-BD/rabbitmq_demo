@@ -27,6 +27,10 @@ public class DemoService {
         demoProducer.sendRegisterA(dto);
     }
 
+    public void registerBrokerA(PersonRegisterRequestDto dto, String routingKey) {
+        demoProducer.sendRegisterAForTest(dto, routingKey);
+    }
+
     public void registerBrokerB(PersonRegisterRequestDto dto) {
         demoProducer.sendRegisterB(dto);
     }
