@@ -6,11 +6,11 @@ spring:
     username: guest
     password: guest
     virtual-host: /
-    exchange:
-        name: demo_register_exchange
-    queue:
-        name: demo_register_queue
-    key: demo_register_key
+#    exchange:
+#        name: demo_register_exchange
+#    queue:
+#        name: demo_register_queue
+#    key: demo_register_key
 
     listener:
       simple:
@@ -20,6 +20,10 @@ spring:
           enabled: true
           max-attempts: 3
           initial-interval: 1000
+    template:
+      mandatory: true
+    publisher-confirm-type: correlated
+    publisher-returns: true
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

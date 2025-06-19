@@ -21,6 +21,7 @@ public class RabbitConfig {
     public static final String REGISTER_QUEUE_NAME_A = "demo_register_queue_a";
     public static final String REGISTER_QUEUE_NAME_B = "demo_register_queue_b";
     public static final String REGISTER_ROUTING_KEY = "demo_register_key";
+    public static final String REGISTER_ROUTING_KEY_2 = "demo_error_key";
 
     //@Value("${rabbitmq.exchange.name}")
     //private String exchange;
@@ -75,7 +76,7 @@ public class RabbitConfig {
 
     @Bean
     public Binding exchangeBindingQueueA(@Qualifier("registerQueueA") Queue queue,
-                                        @Qualifier("topicExchange") TopicExchange exchange) {
+                                        @Qualifier("registerExchangeA") DirectExchange exchange) {
         return BindingBuilder.bind(queue)
                 .to(exchange)
                 .with(REGISTER_ROUTING_KEY);

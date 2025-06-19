@@ -33,7 +33,6 @@ public class DemoConsumer {
         String appId = messageProperties.getAppId();
         Map<String, Object> headers = messageProperties.getHeaders();
 
-
         log.info(String.format("Received message -> %s", message));
         messageService.processRegister(message);
     }
