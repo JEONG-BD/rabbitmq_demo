@@ -54,6 +54,7 @@ dependencies {
     // rabbitmq
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     implementation 'com.fasterxml.jackson.core:jackson-databind'
+    testImplementation 'org.testcontainers:rabbitmq'
 
     //test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
